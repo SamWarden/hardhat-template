@@ -122,12 +122,5 @@ const config: HardhatUserConfig = {
   },
 }
 
-task("generate-wallet", "Generate q new wallet and prints its privateKey, address and mnemonic")
-  .setAction(async () => {
-    const wallet = ethers.Wallet.createRandom()
-    console.log(`New wallet private key is ${wallet.privateKey}`)
-    console.log(`New wallet public address is ${wallet.address}`)
-    console.log(`New wallet mnemonic is ${JSON.stringify(wallet.mnemonic)}`)
-  })
 
 export default config
