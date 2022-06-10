@@ -14,12 +14,12 @@ import "hardhat-contract-sizer"
 
 // Add some .env individual variables
 const INFURA_PROJECT_ID = process.env.INFURA_PROJECT_ID
-const ETHERSCAN_API_KEY = process.env.ETHERSCAN_API_KEY
-const BSCSCAN_API_KEY = process.env.BSCSCAN_API_KEY
-const POLYGONSCAN_API_KEY = process.env.POLYGONSCAN_API_KEY
 const ALCHEMYAPI_URL = process.env.ALCHEMYAPI_URL
+const ETHERSCAN_API_KEY = process.env.ETHERSCAN_API_KEY || ""
+const BSCSCAN_API_KEY = process.env.BSCSCAN_API_KEY || ""
+const POLYGONSCAN_API_KEY = process.env.POLYGONSCAN_API_KEY || ""
 
-const MNEMONIC = process.env.MNEMONIC
+const MNEMONIC = process.env.MNEMONIC || ""
 
 // Use AlchemyAPI to make fork if its URL specifyed else use the Infura API
 const FORKING_URL = ALCHEMYAPI_URL || `https://mainnet.infura.io/v3/${INFURA_PROJECT_ID}`
@@ -111,7 +111,14 @@ const config: HardhatUserConfig = {
     tests: "./tests/",
   },
   etherscan: {
-    apiKey: BSCSCAN_API_KEY,
+    apiKey: {
+      mainnet: ETHERSCAN_API_KEY,
+      kovan: ETHERSCAN_API_KEY,
+      rinkeby: ETHERSCAN_API_KEY,
+      bsc: BSCSCAN_API_KEY,
+      polygon: POLYGONSCAN_API_KEY,
+      polygonMumbai: POLYGONSCAN_API_KEY,
+    },
   },
 }
 
