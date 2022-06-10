@@ -1,38 +1,36 @@
-import { config as dotEnvConfig } from "dotenv";
-dotEnvConfig();
-
-import { HardhatUserConfig } from "hardhat/types";
+import "dotenv/config"
+import { HardhatUserConfig } from "hardhat/types"
 import { task } from "hardhat/config"
-import { ethers } from "ethers";
+import { ethers } from "ethers"
 
-import "@nomiclabs/hardhat-waffle";
-import "@nomiclabs/hardhat-etherscan";
-import "hardhat-gas-reporter";
-import "hardhat-contract-sizer";
+import "@nomiclabs/hardhat-waffle"
+import "@nomiclabs/hardhat-etherscan"
+import "hardhat-gas-reporter"
+import "hardhat-contract-sizer"
 // TODO: reenable solidity-coverage when it works
 // TODO: use the hardhat-deploy plugin
-// import "hardhat-deploy";
-// import "solidity-coverage";
+// import "hardhat-deploy"
+// import "solidity-coverage"
 
 // Add some .env individual variables
-const INFURA_PROJECT_ID = process.env.INFURA_PROJECT_ID;
-const ETHERSCAN_API_KEY = process.env.ETHERSCAN_API_KEY;
-const BSCSCAN_API_KEY = process.env.BSCSCAN_API_KEY;
-const POLYGONSCAN_API_KEY = process.env.POLYGONSCAN_API_KEY;
-const ALCHEMYAPI_URL = process.env.ALCHEMYAPI_URL;
+const INFURA_PROJECT_ID = process.env.INFURA_PROJECT_ID
+const ETHERSCAN_API_KEY = process.env.ETHERSCAN_API_KEY
+const BSCSCAN_API_KEY = process.env.BSCSCAN_API_KEY
+const POLYGONSCAN_API_KEY = process.env.POLYGONSCAN_API_KEY
+const ALCHEMYAPI_URL = process.env.ALCHEMYAPI_URL
 
-const MAINNET_PRIVATE_KEY = process.env.MAINNET_PRIVATE_KEY;
-const BSC_MAINNET_PRIVATE_KEY = process.env.BSC_MAINNET_PRIVATE_KEY;
-const BSC_TESTNET_PRIVATE_KEY = process.env.BSC_TESTNET_PRIVATE_KEY;
-const KOVAN_PRIVATE_KEY = process.env.KOVAN_PRIVATE_KEY;
-const RINKEBY_PRIVATE_KEY = process.env.RINKEBY_PRIVATE_KEY;
-const POLYGON_MAINNET_PRIVATE_KEY = process.env.POLYGON_MAINNET_PRIVATE_KEY;
-const POLYGON_TESTNET_PRIVATE_KEY = process.env.POLYGON_TESTNET_PRIVATE_KEY;
+const MAINNET_PRIVATE_KEY = process.env.MAINNET_PRIVATE_KEY
+const BSC_MAINNET_PRIVATE_KEY = process.env.BSC_MAINNET_PRIVATE_KEY
+const BSC_TESTNET_PRIVATE_KEY = process.env.BSC_TESTNET_PRIVATE_KEY
+const KOVAN_PRIVATE_KEY = process.env.KOVAN_PRIVATE_KEY
+const RINKEBY_PRIVATE_KEY = process.env.RINKEBY_PRIVATE_KEY
+const POLYGON_MAINNET_PRIVATE_KEY = process.env.POLYGON_MAINNET_PRIVATE_KEY
+const POLYGON_TESTNET_PRIVATE_KEY = process.env.POLYGON_TESTNET_PRIVATE_KEY
 
 // Use AlchemyAPI to make fork if its URL specifyed else use the Infura API
-const FORK_URL = ALCHEMYAPI_URL || `https://mainnet.infura.io/v3/${INFURA_PROJECT_ID}`;
+const FORK_URL = ALCHEMYAPI_URL || `https://mainnet.infura.io/v3/${INFURA_PROJECT_ID}`
 
-const BLOCK_NUMBER: number | undefined = 12893772;
+const BLOCK_NUMBER: number | undefined = 12893772
 
 const config: HardhatUserConfig = {
   defaultNetwork: "hardhat",
@@ -68,8 +66,11 @@ const config: HardhatUserConfig = {
     localhost: {},
     mainnet: {
       url: `https://mainnet.infura.io/v3/${INFURA_PROJECT_ID}`,
-      accounts: MAINNET_PRIVATE_KEY ? [MAINNET_PRIVATE_KEY] : [],
+      // accounts: MAINNET_PRIVATE_KEY ? [MAINNET_PRIVATE_KEY] : [],
       chainId: 1,
+      accounts: {
+          mnemonic: process.env.MNEMONIC,
+      },
     },
     kovan: {
       url: `https://kovan.infura.io/v3/${INFURA_PROJECT_ID}`,
@@ -123,4 +124,4 @@ task("generate-wallet", "Generate q new wallet and prints its privateKey, addres
     console.log(`New wallet mnemonic is ${JSON.stringify(wallet.mnemonic)}`)
   })
 
-export default config;
+export default config
