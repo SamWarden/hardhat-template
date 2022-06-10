@@ -1,0 +1,27 @@
+{
+  "compilerOptions": {
+    "target": "es5",
+    "module": "commonjs",
+    "strict": true,
+    "esModuleInterop": true,
+    "outDir": "dist",
+    "downlevelIteration": true,
+    "resolveJsonModule": true,
+    "allowJs": true,
+    "lib": [
+      "ES2020.Promise"
+    ]
+  },
+  "include": [
+    "./hardhat.config.ts",
+    "./scripts",
+    "./tests",
+    "./tasks",
+    "./deploy",
+    "./mocha.context.d.ts",
+    "./build/typechain",
+    "./typechain",
+    "./utils"
+  ],
+  "files": ["./hardhat.config.ts"]
+}
