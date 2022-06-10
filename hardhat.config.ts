@@ -19,16 +19,10 @@ const BSCSCAN_API_KEY = process.env.BSCSCAN_API_KEY
 const POLYGONSCAN_API_KEY = process.env.POLYGONSCAN_API_KEY
 const ALCHEMYAPI_URL = process.env.ALCHEMYAPI_URL
 
-const MAINNET_PRIVATE_KEY = process.env.MAINNET_PRIVATE_KEY
-const BSC_MAINNET_PRIVATE_KEY = process.env.BSC_MAINNET_PRIVATE_KEY
-const BSC_TESTNET_PRIVATE_KEY = process.env.BSC_TESTNET_PRIVATE_KEY
-const KOVAN_PRIVATE_KEY = process.env.KOVAN_PRIVATE_KEY
-const RINKEBY_PRIVATE_KEY = process.env.RINKEBY_PRIVATE_KEY
-const POLYGON_MAINNET_PRIVATE_KEY = process.env.POLYGON_MAINNET_PRIVATE_KEY
-const POLYGON_TESTNET_PRIVATE_KEY = process.env.POLYGON_TESTNET_PRIVATE_KEY
+const MNEMONIC = process.env.MNEMONIC
 
 // Use AlchemyAPI to make fork if its URL specifyed else use the Infura API
-const FORK_URL = ALCHEMYAPI_URL || `https://mainnet.infura.io/v3/${INFURA_PROJECT_ID}`
+const FORKING_URL = ALCHEMYAPI_URL || `https://mainnet.infura.io/v3/${INFURA_PROJECT_ID}`
 
 const BLOCK_NUMBER: number | undefined = 12893772
 
@@ -42,19 +36,13 @@ const config: HardhatUserConfig = {
           optimizer: {runs: 1, enabled: true},
         },
       },
-      // {
-      //   version: "0.6.12",
-      //   settings: {
-      //     optimizer: {runs: 1, enabled: true},
-      //   },
-      // },
     ],
   },
   networks: {
     hardhat: {
       blockGasLimit: 12450000 * 100,
       forking: {
-        url: FORK_URL,
+        url: FORKING_URL,
         // specifing blockNumber available only for AlchemyAPI
         blockNumber: ALCHEMYAPI_URL ? BLOCK_NUMBER : undefined,
       },
@@ -66,38 +54,49 @@ const config: HardhatUserConfig = {
     localhost: {},
     mainnet: {
       url: `https://mainnet.infura.io/v3/${INFURA_PROJECT_ID}`,
-      // accounts: MAINNET_PRIVATE_KEY ? [MAINNET_PRIVATE_KEY] : [],
-      chainId: 1,
       accounts: {
-          mnemonic: process.env.MNEMONIC,
+        mnemonic: MNEMONIC,
       },
+      chainId: 1,
     },
     kovan: {
       url: `https://kovan.infura.io/v3/${INFURA_PROJECT_ID}`,
-      accounts: KOVAN_PRIVATE_KEY ? [KOVAN_PRIVATE_KEY] : [],
+      accounts: {
+        mnemonic: MNEMONIC,
+      },
       chainId: 42,
     },
     rinkeby: {
       url: `https://rinkeby.infura.io/v3/${INFURA_PROJECT_ID}`,
-      accounts: RINKEBY_PRIVATE_KEY ? [RINKEBY_PRIVATE_KEY] : [],
+      accounts: {
+        mnemonic: MNEMONIC,
+      },
     },
     polygon_mainnet: {
       url: `https://rpc-mainnet.maticvigil.com/`,
-      accounts: POLYGON_MAINNET_PRIVATE_KEY ? [POLYGON_MAINNET_PRIVATE_KEY] : [],
+      accounts: {
+        mnemonic: MNEMONIC,
+      },
     },
     polygon_testnet: {
       url: `https://matic-testnet-archive-rpc.bwarelabs.com`,
-      accounts: POLYGON_TESTNET_PRIVATE_KEY ? [POLYGON_TESTNET_PRIVATE_KEY] : [],
+      accounts: {
+        mnemonic: MNEMONIC,
+      },
       chainId: 80001,
     },
     bsc_mainnet: {
       url: "https://bsc-dataseed.binance.org/",
-      accounts: BSC_MAINNET_PRIVATE_KEY ? [BSC_MAINNET_PRIVATE_KEY] : [],
+      accounts: {
+        mnemonic: MNEMONIC,
+      },
       chainId: 56,
     },
     bsc_testnet: {
       url: "https://data-seed-prebsc-1-s1.binance.org:8545",
-      accounts: BSC_TESTNET_PRIVATE_KEY ? [BSC_TESTNET_PRIVATE_KEY] : [],
+      accounts: {
+        mnemonic: MNEMONIC,
+      },
       chainId: 97,
     },
     coverage: {
