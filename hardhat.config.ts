@@ -1,16 +1,17 @@
 import "dotenv/config"
 import { HardhatUserConfig } from "hardhat/types"
-import { task } from "hardhat/config"
 import { ethers } from "ethers"
-
 import "@nomiclabs/hardhat-waffle"
 import "@nomiclabs/hardhat-etherscan"
 import "hardhat-gas-reporter"
 import "hardhat-contract-sizer"
 // TODO: reenable solidity-coverage when it works
 // TODO: use the hardhat-deploy plugin
-// import "hardhat-deploy"
+import "hardhat-deploy"
 // import "solidity-coverage"
+import "@typechain/hardhat"
+
+import "./tasks"
 
 // Add some .env individual variables
 const INFURA_PROJECT_ID = process.env.INFURA_PROJECT_ID
@@ -23,7 +24,6 @@ const MNEMONIC = process.env.MNEMONIC || ""
 
 // Use AlchemyAPI to make fork if its URL specifyed else use the Infura API
 const FORKING_URL = ALCHEMYAPI_URL || `https://mainnet.infura.io/v3/${INFURA_PROJECT_ID}`
-
 const BLOCK_NUMBER: number | undefined = 12893772
 
 const config: HardhatUserConfig = {
@@ -33,7 +33,10 @@ const config: HardhatUserConfig = {
       {
         version: "0.8.14",
         settings: {
-          optimizer: {runs: 1, enabled: true},
+          optimizer: {
+            enabled: true,
+            runs: 4294967295, // max runs (2**32-1)
+          },
         },
       },
     ],
@@ -47,7 +50,7 @@ const config: HardhatUserConfig = {
         blockNumber: ALCHEMYAPI_URL ? BLOCK_NUMBER : undefined,
       },
       accounts: {
-        count: 20,
+        mnemonic: MNEMONIC,
         accountsBalance: ethers.utils.parseEther('1000000').toString(),
       },
     },
@@ -106,9 +109,15 @@ const config: HardhatUserConfig = {
   mocha: {
     timeout: 20000000,
   },
+  typechain: {
+    outDir: "./build/typechain",
+  },
   paths: {
     sources: "./contracts/",
     tests: "./tests/",
+    artifacts: "./build/artifacts",
+    cache: "./build/cache",
+    deployments: "./build/deployments",
   },
   etherscan: {
     apiKey: {
