@@ -13,6 +13,8 @@
     "deploy-rinkeby": "npx hardhat --network rinkeby deploy",
     "deploy-bsc-testnet": "npx hardhat --network bsc_testnet deploy",
     "deploy-bsc-mainnet": "npx hardhat --network bsc_mainnet deploy",
+    "deploy-polygon-testnet": "npx hardhat --network polygon_testnet deploy",
+    "deploy-polygon-mainnet": "npx hardhat --network polygon_mainnet deploy",
     "prepare": "husky install",
     "format": "prettier --write \"tests/**/*.ts\" \"tasks/**/*.ts\" \"contracts/**/*.sol\" \"deploy/**/*.ts\" \"hardhat.config.ts\"",
     "pretty-quick": "pretty-quick --staged",
