@@ -2,14 +2,15 @@ import "dotenv/config"
 import { HardhatUserConfig } from "hardhat/types"
 import { ethers } from "ethers"
 import "@nomiclabs/hardhat-waffle"
+import "@nomiclabs/hardhat-ethers"
 import "@nomiclabs/hardhat-etherscan"
+import "@openzeppelin/hardhat-upgrades"
+import "@typechain/hardhat"
+import "hardhat-deploy"
 import "hardhat-gas-reporter"
 import "hardhat-contract-sizer"
-// TODO: reenable solidity-coverage when it works
-// TODO: use the hardhat-deploy plugin
-import "hardhat-deploy"
-// import "solidity-coverage"
-import "@typechain/hardhat"
+import "hardhat-abi-exporter"
+import "solidity-coverage"
 
 import "./tasks"
 
@@ -106,11 +107,21 @@ const config: HardhatUserConfig = {
       url: "http://127.0.0.1:8555", // Coverage launches its own ganache-cli client
     },
   },
+  namedAccounts: {
+    deployer: 0,
+  },
   mocha: {
     timeout: 20000000,
   },
   typechain: {
     outDir: "./build/typechain",
+  },
+  abiExporter: {
+    path: "./build/abis",
+    runOnCompile: true,
+    clear: true,
+    spacing: 2,
+    pretty: true,
   },
   paths: {
     sources: "./contracts/",
@@ -130,6 +141,5 @@ const config: HardhatUserConfig = {
     },
   },
 }
-
 
 export default config
