@@ -1,9 +1,10 @@
 import "dotenv/config"
 import { HardhatUserConfig } from "hardhat/types"
 import { ethers } from "ethers"
-import "@nomiclabs/hardhat-waffle"
 import "@nomiclabs/hardhat-ethers"
 import "@nomiclabs/hardhat-etherscan"
+import "@nomiclabs/hardhat-solhint";
+import "@nomiclabs/hardhat-waffle"
 import "@openzeppelin/hardhat-upgrades"
 import "@typechain/hardhat"
 import "hardhat-deploy"
@@ -55,7 +56,9 @@ const config: HardhatUserConfig = {
         accountsBalance: ethers.utils.parseEther('1000000').toString(),
       },
     },
-    localhost: {},
+    localhost: {
+      gasMultiplier: 1.2,
+    },
     mainnet: {
       url: `https://mainnet.infura.io/v3/${INFURA_PROJECT_ID}`,
       accounts: {
