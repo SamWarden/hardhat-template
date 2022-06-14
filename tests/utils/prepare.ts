@@ -1,7 +1,7 @@
 import { SignerWithAddress } from "@nomiclabs/hardhat-ethers/signers"
 import { ethers } from "hardhat"
 
-export async function prepareSigners(thisObject: Mocha.Context) {
+export async function prepareSigners(thisObject: Mocha.Context): Promise<void> {
   thisObject.signers = await ethers.getSigners()
   thisObject.owner = thisObject.signers[0]
   thisObject.alice = thisObject.signers[1]
@@ -11,7 +11,7 @@ export async function prepareSigners(thisObject: Mocha.Context) {
   thisObject.misha = thisObject.signers[5]
 }
 
-export async function prepareERC20Tokens(thisObject: Mocha.Context, signer: SignerWithAddress) {
+export async function prepareERC20Tokens(thisObject: Mocha.Context, signer: SignerWithAddress): Promise<void> {
   const tokenFactory = await ethers.getContractFactory("ERC20Mock")
 
   const token1 = await tokenFactory.connect(signer).deploy("Token1", "TKN1", ethers.utils.parseUnits("100000", 6))
