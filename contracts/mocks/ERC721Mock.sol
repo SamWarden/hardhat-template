@@ -15,10 +15,16 @@ contract ERC721Mock is ERC721, ERC721Enumerable {
         string memory symbol
     ) ERC721(name, symbol) {}
 
-    function mint(address to) public {
+    function mintToken(address to) public {
         uint256 tokenId = _tokenIdCounter.current();
         _tokenIdCounter.increment();
         _mint(to, tokenId);
+    }
+
+    function mintTokens(address to, uint amount) public {
+        for (uint i = 0; i < amount; i++) {
+            mintToken(to);
+        }
     }
 
     // The following functions are overrides required by Solidity.
