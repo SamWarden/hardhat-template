@@ -7,7 +7,7 @@ module.exports = {
       },
       options: {
         bracketSpacing: false,
-        printWidth: 300,
+        printWidth: 99,
         tabWidth: 4,
         useTabs: false,
         singleQuote: false,
@@ -17,9 +17,10 @@ module.exports = {
     {
       files: "*.ts",
       options: {
-        printWidth: 145,
+        printWidth: 120,
         semi: false,
-        tabWidth: 4,
+        tabWidth: 2,
+        singleQuote: false,
         trailingComma: "es5",
       },
     },
