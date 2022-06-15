@@ -8,7 +8,7 @@ module.exports = async function (hre: HardhatRuntimeEnvironment) {
   console.log('deployer:', deployer)
   
   const name = 'ERC20Mock'
-  const symbol = 'ERC'
+  const symbol = 'E20'
   const decimals = 18  
 
   console.log('Deploying a contract with name = %s, symbol = %s, decimals = %s', name, symbol, decimals)
