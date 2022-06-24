@@ -118,6 +118,7 @@ const config: HardhatUserConfig = {
   },
   typechain: {
     outDir: "./build/typechain",
+    externalArtifacts: ['libs/**/abis/**/*.json'],
   },
   abiExporter: {
     path: "./build/abis",
