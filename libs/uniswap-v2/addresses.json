@@ -1,0 +1,16 @@
+{
+    "UniswapV2Router02": {
+        "mainnet": "0x7a250d5630b4cf539739df2c5dacb4c659f2488d",
+        "kovan": "0x7a250d5630b4cf539739df2c5dacb4c659f2488d",
+        "rinkeby": "0x7a250d5630b4cf539739df2c5dacb4c659f2488d",
+        "bsc_mainnet": "0x10ed43c718714eb63d5aa57b78b54704e256024e",
+        "bsc_testnet": "0xd99d1c33f9fc3444f8101754abc46c52416550d1"
+    },
+    "UniswapV2Factory": {
+        "mainnet": "0x5C69bEe701ef814a2B6a3EDD4B1652CB9cc5aA6f",
+        "kovan": "0x5C69bEe701ef814a2B6a3EDD4B1652CB9cc5aA6f",
+        "rinkeby": "0x5C69bEe701ef814a2B6a3EDD4B1652CB9cc5aA6f",
+        "bsc_mainnet": "0xca143ce32fe78f1f7019d7d551a6402fc5350c73",
+        "bsc_testnet": "0x6725f303b657a9451d8ba641348b6761a6cc7a17"
+    }
+}
