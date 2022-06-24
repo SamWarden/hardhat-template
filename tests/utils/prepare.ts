@@ -1,28 +1,57 @@
 import { SignerWithAddress } from "@nomiclabs/hardhat-ethers/signers"
 import { ethers } from "hardhat"
+import { ERC20Mock__factory, ERC721Mock__factory } from "../../build/typechain"
+import { token } from "../../build/typechain/@openzeppelin/contracts"
 
-export async function prepareSigners(thisObject: Mocha.Context): Promise<void> {
+export async function prepareSigners(thisObject: Mocha.Context) {
   thisObject.signers = await ethers.getSigners()
   thisObject.owner = thisObject.signers[0]
   thisObject.alice = thisObject.signers[1]
   thisObject.bob = thisObject.signers[2]
   thisObject.carol = thisObject.signers[3]
-  thisObject.tema = thisObject.signers[4]
-  thisObject.misha = thisObject.signers[5]
+  thisObject.dave = thisObject.signers[4]
+
+  thisObject.eve = thisObject.signers[5]
+  thisObject.faythe = thisObject.signers[6]
+  thisObject.grace = thisObject.signers[7]
+  thisObject.judy = thisObject.signers[8]
+  thisObject.mallory = thisObject.signers[9]
+  thisObject.olivia = thisObject.signers[10]
+  thisObject.sybil = thisObject.signers[11]
+  thisObject.ted = thisObject.signers[12]
 }
 
-export async function prepareERC20Tokens(thisObject: Mocha.Context, signer: SignerWithAddress): Promise<void> {
-  const tokenFactory = await ethers.getContractFactory("ERC20Mock")
+export async function prepareERC20Tokens(thisObject: Mocha.Context, signer: SignerWithAddress) {
+  const tokenFactory = new ERC20Mock__factory()
 
-  const token1 = await tokenFactory.connect(signer).deploy("Token1", "TKN1", ethers.utils.parseUnits("100000", 6))
+  const token1 = await tokenFactory.connect(signer).deploy("Token1", "TKN1", 18)
   await token1.deployed()
+  await token1.connect(signer).mint(signer.address, ethers.utils.parseUnits("100000"))
   thisObject.token1 = token1
 
-  const token2 = await tokenFactory.connect(signer).deploy("Token2", "TKN2", ethers.utils.parseUnits("100000", 6))
+  const token2 = await tokenFactory.connect(signer).deploy("Token2", "TKN2", 18)
   await token2.deployed()
+  await token2.connect(signer).mint(signer.address, ethers.utils.parseUnits("100000"))
   thisObject.token2 = token2
 
-  const token3 = await tokenFactory.connect(signer).deploy("Token3", "TKN3", ethers.utils.parseUnits("100000", 6))
+  const token3 = await tokenFactory.connect(signer).deploy("Token3", "TKN3", 18)
   await token3.deployed()
+  await token3.connect(signer).mint(signer.address, ethers.utils.parseUnits("100000"))
   thisObject.token3 = token3
+}
+
+export async function prepareERC721Tokens(thisObject: Mocha.Context, signer: SignerWithAddress) {
+  const tokenFactory = new ERC721Mock__factory()
+
+  const erc721Mock1 = await tokenFactory.connect(signer).deploy("ERC721Mock1", "E721M1", "ipfs://baseURI1", "ipfs://contractURI1")
+  await erc721Mock1.deployed()
+  thisObject.erc721Mock1 = erc721Mock1
+
+  const erc721Mock2 = await tokenFactory.connect(signer).deploy("ERC721Mock2", "E721M2", "ipfs://baseURI2", "ipfs://contractURI2")
+  await erc721Mock2.deployed()
+  thisObject.erc721Mock2 = erc721Mock2
+
+  const erc721Mock3 = await tokenFactory.connect(signer).deploy("ERC721Mock3", "E721M3", "ipfs://baseURI2", "ipfs://contractURI2")
+  await erc721Mock3.deployed()
+  thisObject.erc721Mock3 = erc721Mock3
 }
