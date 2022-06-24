@@ -1,6 +1,7 @@
 import { BigNumber } from "ethers"
+import hre from "hardhat"
 
-const { ethers } = require("hardhat")
+const { ethers } = hre
 
 export async function advanceBlock(): Promise<any> {
   return ethers.provider.send("evm_mine", [])
@@ -44,6 +45,14 @@ export async function advanceTimeAndBlock(time: BigNumber): Promise<void> {
 
 export async function advanceTime(time: number): Promise<void> {
   await ethers.provider.send("evm_increaseTime", [time])
+}
+
+export async function makeSnapshot(): Promise<BigNumber> {
+  return hre.network.provider.send("evm_snapshot")
+}
+
+export async function revertToSnapshot(snapshotBlock: BigNumber): Promise<void> {
+  await hre.network.provider.send("evm_revert", [snapshotBlock])
 }
 
 export const duration = {
