@@ -1,7 +1,6 @@
 import { SignerWithAddress } from "@nomiclabs/hardhat-ethers/signers"
 import { ethers } from "hardhat"
 import { ERC20Mock__factory, ERC721Mock__factory } from "../../build/typechain"
-import { token } from "../../build/typechain/@openzeppelin/contracts"
 
 export async function prepareSigners(thisObject: Mocha.Context) {
   thisObject.signers = await ethers.getSigners()

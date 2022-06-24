@@ -15,11 +15,14 @@ describe("ERC20Mock", async function () {
 	before(async function () {
 		await prepareSigners(this)
 		await prepareERC20Tokens(this, this.bob)
-		this.snapshotBlock = await makeSnapshot()
+	})
+
+	beforeEach(async function () {
+		this.snapshotId = await makeSnapshot()
 	})
 
 	afterEach(async function () {
-		await revertToSnapshot(this.snapshotBlock)
+		await revertToSnapshot(this.snapshotId)
 	})
 
 	describe("Deployment", async function () {

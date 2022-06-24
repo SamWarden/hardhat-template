@@ -51,8 +51,8 @@ export async function makeSnapshot(): Promise<BigNumber> {
   return hre.network.provider.send("evm_snapshot")
 }
 
-export async function revertToSnapshot(snapshotBlock: BigNumber): Promise<void> {
-  await hre.network.provider.send("evm_revert", [snapshotBlock])
+export async function revertToSnapshot(snapshotId: BigNumber): Promise<void> {
+  await hre.network.provider.send("evm_revert", [snapshotId])
 }
 
 export const duration = {

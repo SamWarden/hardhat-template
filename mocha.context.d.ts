@@ -34,6 +34,6 @@ declare module "mocha" {
     erc721Mock2: ERC721Mock
     erc721Mock3: ERC721Mock
 
-    snapshotBlock: BigNumber
+    snapshotId: BigNumber
   }
 }
