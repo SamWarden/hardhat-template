@@ -1,4 +1,4 @@
 export type UniswapV2Addresses = {
-	uniswapRouterAddresses: string,
-	uniswapFactoryAddresses: string,
+	uniswapRouterAddresses: { [key: string]: string},
+	uniswapFactoryAddresses: { [key: string]: string},
 }
