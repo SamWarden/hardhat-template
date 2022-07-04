@@ -38,7 +38,7 @@ const config: HardhatUserConfig = {
         settings: {
           optimizer: {
             enabled: true,
-            runs: 4294967295, // max runs (2**32-1)
+            runs: 999999, // max runs for etherscan
           },
         },
       },
