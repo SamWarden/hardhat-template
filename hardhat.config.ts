@@ -27,7 +27,7 @@ const MNEMONIC = process.env.MNEMONIC || ""
 
 // Use AlchemyAPI to make fork if its URL specifyed else use the Infura API
 const FORKING_URL = ALCHEMYAPI_URL || `https://mainnet.infura.io/v3/${INFURA_PROJECT_ID}`
-const BLOCK_NUMBER: number | undefined = 12893772
+const BLOCK_NUMBER: number | undefined = 15073606
 
 const config: HardhatUserConfig = {
   defaultNetwork: "hardhat",
