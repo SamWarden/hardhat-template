@@ -19,6 +19,13 @@ import "./tasks"
 // Add some .env individual variables
 const INFURA_PROJECT_ID = process.env.INFURA_PROJECT_ID
 const ALCHEMYAPI_URL = process.env.ALCHEMYAPI_URL
+const COINMARKETCAP_API_KEY = process.env.COINMARKETCAP_API_KEY
+
+const REPORT_GAS = process.env.REPORT_GAS || "true"
+const GAS_REPORTER_TOKEN = process.env.GAS_REPORTER_TOKEN || "ETH"
+const GAS_PRICE_API = process.env.GAS_PRICE_API
+const REPORTER_GAS_PRICE = Number(process.env.REPORTER_GAS_PRICE) || 50
+
 const ETHERSCAN_API_KEY = process.env.ETHERSCAN_API_KEY || ""
 const BSCSCAN_API_KEY = process.env.BSCSCAN_API_KEY || ""
 const POLYGONSCAN_API_KEY = process.env.POLYGONSCAN_API_KEY || ""
@@ -116,6 +123,17 @@ const config: HardhatUserConfig = {
   },
   mocha: {
     timeout: 20000000,
+  },
+  gasReporter: {
+    enabled: REPORT_GAS === "true" ? true : false,
+    currency: "USD",
+    coinmarketcap: COINMARKETCAP_API_KEY,
+    token: GAS_REPORTER_TOKEN,
+    gasPrice: REPORTER_GAS_PRICE,
+    gasPriceApi: GAS_PRICE_API,
+    showTimeSpent: true,
+    showMethodSig: true,
+    maxMethodDiff: 10,
   },
   typechain: {
     outDir: "./build/typechain",
