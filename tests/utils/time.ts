@@ -19,12 +19,10 @@ export async function advanceBlockTo(blockNumber: number): Promise<void> {
   }
 }
 
-export async function increaseTime(value: BigNumber): Promise<void> {
-  await ethers.provider.send("evm_increaseTime", [value.toNumber()])
-  await advanceBlock()
-}
-
-export async function setNextBlockTime(time: BigNumber): Promise<void> {
+export async function setNextBlockTime(time: number | BigNumber): Promise<void> {
+  if (time instanceof ethers.BigNumber) {
+    time = time.toNumber()
+  }
   await ethers.provider.send("evm_setNextBlockTimestamp", [time])
 }
 
@@ -39,11 +37,14 @@ export async function getCurrentBlockTime(): Promise<BigNumber> {
 }
 
 export async function advanceTimeAndBlock(time: BigNumber): Promise<void> {
-  await advanceTime(time.toNumber())
+  await advanceTime(time)
   await advanceBlock()
 }
 
-export async function advanceTime(time: number): Promise<void> {
+export async function advanceTime(time: number | BigNumber): Promise<void> {
+  if (time instanceof ethers.BigNumber) {
+    time = time.toNumber()
+  }
   await ethers.provider.send("evm_increaseTime", [time])
 }
 
