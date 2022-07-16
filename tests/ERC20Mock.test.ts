@@ -9,8 +9,6 @@ import { makeSnapshot, revertToSnapshot } from "./utils/time"
 const { parseUnits } = hre.ethers.utils
 chaiUse(hre.waffle.solidity)
 
-const NETWORK = "mainnet"
-
 describe("ERC20Mock", async function () {
 	before(async function () {
 		await prepareSigners(this)
