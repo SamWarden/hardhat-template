@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "target": "es5",
+    "target": "ES2022",
     "module": "commonjs",
     "strict": true,
     "esModuleInterop": true,
@@ -8,8 +8,12 @@
     "downlevelIteration": true,
     "resolveJsonModule": true,
     "allowJs": true,
+    "baseUrl": "./",
+    "paths": {
+      "@/*": ["*"]
+    },
     "lib": [
-      "ES2020.Promise"
+      "ES2022"
     ]
   },
   "include": [
@@ -21,7 +25,9 @@
     "./mocha.context.d.ts",
     "./build/typechain",
     "./typechain",
-    "./utils"
+    "./utils",
+    "./libs",
+    "./src"
   ],
   "files": ["./hardhat.config.ts"]
 }
