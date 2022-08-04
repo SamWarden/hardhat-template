@@ -87,6 +87,14 @@ const config: HardhatUserConfig = {
       accounts: {
         mnemonic: MNEMONIC,
       },
+      chainId: 4,
+    },
+    goerli: {
+      url: `https://goerli.infura.io/v3/${INFURA_PROJECT_ID}`,
+      accounts: {
+        mnemonic: MNEMONIC,
+      },
+      chainId: 5,
     },
     polygon_mainnet: {
       url: `https://rpc-mainnet.maticvigil.com/`,
