@@ -5,6 +5,7 @@
     "strict": true,
     "esModuleInterop": true,
     "outDir": "dist",
+    "sourceMap": true,
     "downlevelIteration": true,
     "resolveJsonModule": true,
     "allowJs": true,
