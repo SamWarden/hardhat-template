@@ -3,6 +3,7 @@
         "mainnet": "0x7a250d5630B4cF539739dF2C5dAcb4c659F2488D",
         "kovan": "0x7a250d5630B4cF539739dF2C5dAcb4c659F2488D",
         "rinkeby": "0x7a250d5630B4cF539739dF2C5dAcb4c659F2488D",
+        "goerli": "0x7a250d5630B4cF539739dF2C5dAcb4c659F2488D",
         "bsc_mainnet": "0x10ed43c718714eb63d5aa57b78b54704e256024e",
         "bsc_testnet": "0x9Ac64Cc6e4415144C455BD8E4837Fea55603e5c3"
     },
@@ -10,6 +11,7 @@
         "mainnet": "0x5C69bEe701ef814a2B6a3EDD4B1652CB9cc5aA6f",
         "kovan": "0x5C69bEe701ef814a2B6a3EDD4B1652CB9cc5aA6f",
         "rinkeby": "0x5C69bEe701ef814a2B6a3EDD4B1652CB9cc5aA6f",
+        "goerli": "0x5C69bEe701ef814a2B6a3EDD4B1652CB9cc5aA6f",
         "bsc_mainnet": "0xca143ce32fe78f1f7019d7d551a6402fc5350c73",
         "bsc_testnet": "0xB7926C0430Afb07AA7DEfDE6DA862aE0Bde767bc"
     }
