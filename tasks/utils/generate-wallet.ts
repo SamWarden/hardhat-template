@@ -1,7 +1,7 @@
 import { task } from "hardhat/config"
 
 
-task("generate-wallet", "Generates a new wallet and prints its privateKey, address and mnemonic", async (taskArgs, hre) => {
+task("generate-wallet", "Generates a new wallet and prints its privateKey, address and mnemonic", async (_taskArgs, hre) => {
   const wallet = hre.ethers.Wallet.createRandom()
   console.log(`New wallet private key is ${wallet.privateKey}`)
   console.log(`New wallet public address is ${wallet.address}`)
