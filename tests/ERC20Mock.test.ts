@@ -24,14 +24,14 @@ describe("ERC20Mock", async function () {
 	})
 
 	describe("Deployment", async function () {
-		it("Should assign the total supply of tokens to the owner", async function () {
+		it("OK: Assign the total supply of tokens to the owner", async function () {
 			const ownerBalance = await this.token1.balanceOf(this.bob.address)
 			expect(await this.token1.totalSupply()).to.equal(ownerBalance)
 		})
 	})
 
 	describe("Transactions", async function () {
-		it("Should transfer tokens between accounts", async function () {
+		it("OK: Transfer tokens between accounts", async function () {
 			const transferAmount = hre.ethers.utils.parseUnits("100", 6)
 			await expect(this.token1.connect(this.bob).transfer(this.alice.address, transferAmount))
 				.to.emit(this.token1, "Transfer")
@@ -41,7 +41,7 @@ describe("ERC20Mock", async function () {
 			expect(aliceBalance).to.equal(transferAmount)
 		})
 
-		it("Should fail if sender doesn’t have enough tokens", async function () {
+		it("Revert: Sender doesn’t have enough tokens", async function () {
 			const initialOwnerBalance = await this.token1.balanceOf(this.bob.address)
 			await expect(this.token1.connect(this.carol).transfer(this.bob.address, 1)).to.be.revertedWith(
 				"ERC20: transfer amount exceeds balance"
@@ -51,7 +51,7 @@ describe("ERC20Mock", async function () {
 			expect(await this.token1.balanceOf(this.bob.address)).to.equal(initialOwnerBalance)
 		})
 
-		it("Should update balances after transfers", async function () {
+		it("OK: update balances after transfers", async function () {
 			const initialOwnerBalance = await this.token1.balanceOf(this.bob.address)
 
 			const transferToMishaAmount = hre.ethers.utils.parseUnits("100", 6)
