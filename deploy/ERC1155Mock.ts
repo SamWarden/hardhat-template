@@ -19,6 +19,8 @@ module.exports = async function (hre: HardhatRuntimeEnvironment) {
   })
   console.log(erc1155)
 
+  await hre.ethers.provider.waitForTransaction(erc1155.transactionHash!, 10)
+
   console.log("Verifying")
   await hre.run("verify:verify", {
     address: erc1155.address,

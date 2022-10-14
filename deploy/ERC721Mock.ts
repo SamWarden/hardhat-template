@@ -25,13 +25,12 @@ module.exports = async function (hre: HardhatRuntimeEnvironment) {
     from: deployer,
     log: true,
   });
-  const erc721 = ERC721Mock__factory.connect(contract.address, signer)
-  const tokensAmount = 100
-  console.log(await erc721.mintTokens(deployer, tokensAmount, { from: signer.address }))
+
+  await hre.ethers.provider.waitForTransaction(contract.transactionHash!, 10)
 
   console.log("Verifying")
   await hre.run("verify:verify", {
-    address: erc721.address,
+    address: contract.address,
     constructorArguments: [
       name,
       symbol,
@@ -40,5 +39,9 @@ module.exports = async function (hre: HardhatRuntimeEnvironment) {
     ],
   })
   console.log("VERIFICATION COMPLETE")
+
+  const erc721 = ERC721Mock__factory.connect(contract.address, signer)
+  const tokensAmount = 100
+  console.log(await erc721.mintTokens(deployer, tokensAmount, { from: signer.address }))
 }
 module.exports.tags = ["ERC721Mock"]
