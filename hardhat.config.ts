@@ -4,7 +4,7 @@ import { ethers } from "ethers"
 import "@nomiclabs/hardhat-ethers"
 import "@nomiclabs/hardhat-etherscan"
 import "@nomiclabs/hardhat-solhint";
-import "@nomiclabs/hardhat-waffle"
+import "@nomicfoundation/hardhat-chai-matchers"
 import "@openzeppelin/hardhat-upgrades"
 import "@primitivefi/hardhat-dodoc"
 import "@typechain/hardhat"
