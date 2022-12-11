@@ -7,7 +7,6 @@ import { prepareERC20Tokens, prepareSigners } from "./utils/prepare"
 import { makeSnapshot, revertToSnapshot } from "./utils/time"
 
 const { parseUnits } = hre.ethers.utils
-chaiUse(hre.waffle.solidity)
 
 describe("ERC20Mock", async function () {
 	before(async function () {
