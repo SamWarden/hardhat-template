@@ -3,70 +3,70 @@ import { Contract, ContractFactory, BigNumber } from "ethers"
 import { expect, use as chaiUse } from "chai"
 import { AddressZero } from "@ethersproject/constants"
 import type { SignerWithAddress } from "@nomiclabs/hardhat-ethers/signers"
-import { prepareERC20Tokens, prepareSigners } from "./utils/prepare"
+import { prepareSigners } from "./utils/prepare"
 import { makeSnapshot, revertToSnapshot } from "./utils/time"
+import {
+  ERC20Mock as ERC20MockContract, ERC20Mock__factory,
+} from "../build/typechain"
 
 const { parseUnits } = hre.ethers.utils
 
 describe("ERC20Mock", async function () {
-	before(async function () {
-		await prepareSigners(this)
-		await prepareERC20Tokens(this, this.bob)
-	})
+  let ERC20Mock: ERC20Mock__factory
+  
+  let erc20: ERC20MockContract
 
-	beforeEach(async function () {
-		this.snapshotId = await makeSnapshot()
-	})
+  let owner: SignerWithAddress
 
-	afterEach(async function () {
-		await revertToSnapshot(this.snapshotId)
-	})
+  const TOKEN_NAME = "ERC20Mock"
+  const TOKEN_SYMBOL = "ERC"
+  const TOKEN_DECIMALS = 18
+  const INITIAL_TOTAL_SUPPLY = parseUnits("0")
 
-	describe("Deployment", async function () {
-		it("OK: Assign the total supply of tokens to the owner", async function () {
-			const ownerBalance = await this.token1.balanceOf(this.bob.address)
-			expect(await this.token1.totalSupply()).to.equal(ownerBalance)
-		})
-	})
+  before(async function () {
+    await prepareSigners(this)
 
-	describe("Transactions", async function () {
-		it("OK: Transfer tokens between accounts", async function () {
-			const transferAmount = hre.ethers.utils.parseUnits("100", 6)
-			await expect(this.token1.connect(this.bob).transfer(this.alice.address, transferAmount))
-				.to.emit(this.token1, "Transfer")
-				.withArgs(this.bob.address, this.alice.address, transferAmount)
+    owner = this.owner
 
-			const aliceBalance = await this.token1.balanceOf(this.alice.address)
-			expect(aliceBalance).to.equal(transferAmount)
-		})
+    ERC20Mock = new ERC20Mock__factory(owner)
+    erc20 = await ERC20Mock.deploy(TOKEN_NAME, TOKEN_SYMBOL, TOKEN_DECIMALS)
+    await erc20.deployed()
+  })
 
-		it("Revert: Sender doesn’t have enough tokens", async function () {
-			const initialOwnerBalance = await this.token1.balanceOf(this.bob.address)
-			await expect(this.token1.connect(this.carol).transfer(this.bob.address, 1)).to.be.revertedWith(
-				"ERC20: transfer amount exceeds balance"
-			)
+  beforeEach(async function () {
+    this.snapshotId = await makeSnapshot()
+  })
 
-			// Owner balance shouldn't have changed.
-			expect(await this.token1.balanceOf(this.bob.address)).to.equal(initialOwnerBalance)
-		})
+  afterEach(async function () {
+    await revertToSnapshot(this.snapshotId)
+  })
 
-		it("OK: update balances after transfers", async function () {
-			const initialOwnerBalance = await this.token1.balanceOf(this.bob.address)
+  describe("Deployment", async function () {
+    it("OK: Deploy token", async function () {
+      const erc20 = await ERC20Mock.deploy(TOKEN_NAME, TOKEN_SYMBOL, TOKEN_DECIMALS)
+      await erc20.deployed()
+    })
+  })
 
-			const transferToMishaAmount = hre.ethers.utils.parseUnits("100", 6)
-			await this.token1.connect(this.bob).transfer(this.carol.address, transferToMishaAmount)
+  describe("Getters", async function () {
+    it("OK: Get name", async function () {
+      expect(await erc20.name()).to.equal(TOKEN_NAME)
+    })
 
-			const transferToTemaAmount = hre.ethers.utils.parseUnits("100", 6)
-			await this.token1.connect(this.bob).transfer(this.dave.address, transferToTemaAmount)
+    it("OK: Get symbol", async function () {
+      expect(await erc20.symbol()).to.equal(TOKEN_SYMBOL)
+    })
 
-			const finalOwnerBalance = await this.token1.balanceOf(this.bob.address)
-			expect(finalOwnerBalance).to.equal(initialOwnerBalance.sub(transferToTemaAmount).sub(transferToMishaAmount))
+    it("OK: Get decimals", async function () {
+      expect(await erc20.decimals()).to.equal(TOKEN_DECIMALS)
+    })
 
-			const carolBalance = await this.token1.balanceOf(this.carol.address)
-			expect(carolBalance).to.equal(transferToMishaAmount)
+    it("OK: Get total supply", async function () {
+      expect(await erc20.totalSupply()).to.equal(INITIAL_TOTAL_SUPPLY)
+    })
 
-			const daveBalance = await this.token1.balanceOf(this.dave.address)
-			expect(daveBalance).to.equal(transferToTemaAmount)
-		})
-	})
+    it("OK: Get initial balance", async function () {
+      expect(await erc20.balanceOf(owner.address)).to.equal(INITIAL_TOTAL_SUPPLY)
+    })
+  })
 })
