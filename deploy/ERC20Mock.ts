@@ -27,6 +27,7 @@ module.exports = async function (hre: HardhatRuntimeEnvironment) {
 
   console.log("Verifying")
   await hre.run("verify:verify", {
+    contract: "contracts/mocks/ERC20Mock.sol:ERC20Mock",
     address: erc20.address,
     constructorArguments: [
       name,
