@@ -69,4 +69,41 @@ describe("ERC20Mock", async function () {
       expect(await erc20.balanceOf(owner.address)).to.equal(INITIAL_TOTAL_SUPPLY)
     })
   })
+
+  describe("Transactions", async function () {
+    const transferAmount = parseUnits("100")
+
+    let recipient: SignerWithAddress
+    let initialOwnerBalance: BigNumber
+    let ownerBalanceWithTransferAmount: BigNumber
+    let initialRecipientBalance: BigNumber
+
+    beforeEach(async function () {
+      recipient = this.bob
+      initialOwnerBalance = await erc20.balanceOf(owner.address)
+
+      await erc20.mint(owner.address, transferAmount)
+      ownerBalanceWithTransferAmount = await erc20.balanceOf(owner.address)
+
+      initialRecipientBalance = await erc20.balanceOf(recipient.address)
+    })
+
+    it("OK: Transfer tokens between accounts", async function () {
+      await expect(erc20.transfer(recipient.address, transferAmount))
+        .to.emit(erc20, "Transfer")
+        .withArgs(owner.address, recipient.address, transferAmount)
+
+      expect(await erc20.balanceOf(owner.address)).to.equal(initialOwnerBalance)
+      expect(await erc20.balanceOf(recipient.address)).to.equal(transferAmount)
+    })
+
+    it("Revert: Sender doesn't have enough tokens", async function () {
+      await expect(erc20.connect(recipient).transfer(owner.address, 1)).to.be.revertedWith(
+        "ERC20: transfer amount exceeds balance"
+      )
+
+      expect(await erc20.balanceOf(recipient.address)).to.equal(initialRecipientBalance)
+      expect(await erc20.balanceOf(owner.address)).to.equal(ownerBalanceWithTransferAmount)
+    })
+  })
 })

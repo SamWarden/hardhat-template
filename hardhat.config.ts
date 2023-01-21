@@ -157,7 +157,7 @@ const config: HardhatUserConfig = {
   },
   dodoc: {
     include: [],
-    runOnCompile: true,
+    runOnCompile: false,
     freshOutput: true,
     outputDir: "./docs/contracts",
   },
