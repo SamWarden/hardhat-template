@@ -31,7 +31,7 @@ contract ERC721Mock is ERC721, ERC721Enumerable, ERC721Burnable {
         _mint(to, tokenId);
     }
 
-    function mintTokens(address to, uint amount) public {
+    function mintTokens(address to, uint amount) external {
         for (uint i = 0; i < amount; i++) {
             mintToken(to);
         }
