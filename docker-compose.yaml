@@ -10,3 +10,14 @@ services:
     volumes:
       - ./:/usr/src/app/:rw
 
+  slither:
+    container_name: hardhat-template-slither
+    image: trailofbits/eth-security-toolbox:latest
+    volumes:
+      - ./:/usr/src/app/:ro
+    entrypoint: "slither"
+    command: [
+      "--config-file", "/usr/src/app/slither.config.json",
+      "--hardhat-artifacts-directory", "/usr/src/app/build/artifacts",
+      "/usr/src/app/",
+    ]

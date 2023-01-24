@@ -1,0 +1,5 @@
+{
+    "ignore_compile": true,
+    "detectors_to_exclude": "solc-version",
+    "filter_paths": "(node_modules/)"
+}
