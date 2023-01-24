@@ -1,0 +1,12 @@
+version: "3.9"
+
+services:
+  hardhat:
+    container_name: hardhat-template-hardhat
+    image: hardhat-template-hardhat:latest
+    user: ${UID:-1000}
+    build:
+      context: .
+    volumes:
+      - ./:/usr/src/app/:rw
+
