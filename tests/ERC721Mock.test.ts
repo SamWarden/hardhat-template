@@ -44,8 +44,7 @@ describe("ERC721Mock", async function () {
 
   describe("Deployment", async function () {
     it("OK: Deploy nft", async function () {
-      const erc721Nft = await ERC721Mock.deploy(TOKEN_NAME, TOKEN_SYMBOL, BASE_URI, CONTRACT_URI)
-      await erc721Nft.deployed()
+      await expect(ERC721Mock.deploy(TOKEN_NAME, TOKEN_SYMBOL, BASE_URI, CONTRACT_URI)).not.to.be.reverted
     })
   })
 

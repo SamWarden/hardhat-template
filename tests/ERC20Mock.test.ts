@@ -43,8 +43,7 @@ describe("ERC20Mock", async function () {
 
   describe("Deployment", async function () {
     it("OK: Deploy token", async function () {
-      const erc20Token = await ERC20Mock.deploy(TOKEN_NAME, TOKEN_SYMBOL, TOKEN_DECIMALS)
-      await erc20Token.deployed()
+      await expect(ERC20Mock.deploy(TOKEN_NAME, TOKEN_SYMBOL, TOKEN_DECIMALS)).not.to.be.reverted
     })
   })
 
