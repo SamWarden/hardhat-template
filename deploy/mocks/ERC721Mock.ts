@@ -1,5 +1,4 @@
 import { HardhatRuntimeEnvironment } from "hardhat/types"
-import { ERC721Mock__factory } from "../build/typechain/factories/build/artifacts/contracts/mocks/ERC721Mock__factory"
 
 module.exports = async function (hre: HardhatRuntimeEnvironment) {
   const { deployments, getNamedAccounts } = hre
@@ -41,7 +40,7 @@ module.exports = async function (hre: HardhatRuntimeEnvironment) {
   })
   console.log("VERIFICATION COMPLETE")
 
-  const erc721 = ERC721Mock__factory.connect(contract.address, signer)
+  const erc721 = await hre.ethers.getContractAt("ERC721Mock", contract.address, signer)
   const tokensAmount = 100
   console.log(await erc721.mintTokens(deployer, tokensAmount, { from: signer.address }))
 }
