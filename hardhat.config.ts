@@ -66,6 +66,7 @@ const config: HardhatUserConfig = {
       },
     },
     localhost: {
+      url: "http://127.0.0.1:8545/",
       gasMultiplier: 1.2,
     },
     mainnet: {
@@ -129,6 +130,7 @@ const config: HardhatUserConfig = {
   },
   namedAccounts: {
     deployer: 0,
+    owner: 0,
   },
   mocha: {
     timeout: 20000000,
