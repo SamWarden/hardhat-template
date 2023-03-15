@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: MIT
 
-pragma solidity ^0.8.17;
+pragma solidity ^0.8.19;
 
 import {ERC721} from "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 import {ERC721Enumerable} from "@openzeppelin/contracts/token/ERC721/extensions/ERC721Enumerable.sol";
@@ -32,7 +32,7 @@ contract ERC721Mock is ERC721, ERC721Enumerable, ERC721Burnable {
     }
 
     function mintTokens(address to, uint amount) external {
-        for (uint i = 0; i < amount; i++) {
+        for (uint i = 0; i < amount; ++i) {
             mintToken(to);
         }
     }
@@ -43,7 +43,7 @@ contract ERC721Mock is ERC721, ERC721Enumerable, ERC721Burnable {
     function tokenURI(uint256 tokenId) public view virtual override returns (string memory) {
         require(_exists(tokenId), "ERC721Metadata: URI query for nonexistent token");
 
-        return bytes(baseURI).length > 0 ? string(abi.encodePacked(baseURI, Strings.toString(tokenId), ".json")) : "";
+        return bytes(baseURI).length != 0 ? string(abi.encodePacked(baseURI, Strings.toString(tokenId), ".json")) : "";
     }
 
     function supportsInterface(bytes4 interfaceId)

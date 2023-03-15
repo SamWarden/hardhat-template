@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: MIT
 
-pragma solidity ^0.8.17;
+pragma solidity ^0.8.19;
 
 interface IUniswapV2Pair {
     event Approval(address indexed owner, address indexed spender, uint value);
