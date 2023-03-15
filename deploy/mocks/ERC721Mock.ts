@@ -1,47 +1,26 @@
-import { HardhatRuntimeEnvironment } from "hardhat/types"
+import { utils } from "@/deploy"
+import type { HardhatRuntimeEnvironment } from "hardhat/types"
 
 module.exports = async function (hre: HardhatRuntimeEnvironment) {
-  const { deployments, getNamedAccounts } = hre
-  const { deploy } = deployments
+  const { deployer } = await utils.getAccounts(hre)
 
-  const { deployer } = await getNamedAccounts()
-  const signer = await hre.ethers.getSigner(deployer)
-  console.log("deployer:", deployer)
+  const contractName = "ERC721Mock"
+  const contractPath = "contracts/mocks/ERC721Mock.sol:ERC721Mock"
 
   const name = "ERC721Mock"
   const symbol = "E721"
   const baseURI = "ipfs://QmYMemfgmkXpYjoaTicLrUVN7MjK6Nk6UAUcYaWA6i55MC/"
   const contractURI = "ipfs://QmVqNfAPSdkdben22UA9UebbQ2mBWvh5RGbw1mrjCP9Ky4"
+  const contractArgs = [name, symbol, baseURI, contractURI]
 
-  console.log("Deploying a contract with name = %s, symbol = %s, baseURI = %sm contractURI = %s", name, symbol, baseURI, contractURI)
-  const contract = await deploy("ERC721Mock", {
-    args: [
-      name,
-      symbol,
-      baseURI,
-      contractURI,
-    ],
-    from: deployer,
-    log: true,
-  });
+  const deployment = await utils.deployContract(hre, contractName, contractPath, contractArgs, deployer)
+  await utils.waitForConfirmation(hre, deployment)
+  await utils.verifyContract(hre, deployment, contractPath, contractArgs)
 
-  await hre.ethers.provider.waitForTransaction(contract.transactionHash!, 10)
-
-  console.log("Verifying")
-  await hre.run("verify:verify", {
-    contract: "contracts/mocks/ERC721Mock.sol:ERC721Mock",
-    address: contract.address,
-    constructorArguments: [
-      name,
-      symbol,
-      baseURI,
-      contractURI,
-    ],
-  })
-  console.log("VERIFICATION COMPLETE")
-
-  const erc721 = await hre.ethers.getContractAt("ERC721Mock", contract.address, signer)
+  const signer = await hre.ethers.getSigner(deployer)
+  const erc721 = await hre.ethers.getContractAt("ERC721Mock", deployment.address, signer)
   const tokensAmount = 100
-  console.log(await erc721.mintTokens(deployer, tokensAmount, { from: signer.address }))
+  const mintTx = await erc721.mintTokens(deployer, tokensAmount, { from: signer.address })
+  console.log("Mint tokens:", mintTx.hash)
 }
 module.exports.tags = ["ERC721Mock"]

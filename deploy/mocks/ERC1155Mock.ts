@@ -1,34 +1,17 @@
-import { HardhatRuntimeEnvironment } from "hardhat/types"
+import { utils } from "@/deploy"
+import type { HardhatRuntimeEnvironment } from "hardhat/types"
 
 module.exports = async function (hre: HardhatRuntimeEnvironment) {
-  const { deployments, getNamedAccounts } = hre
-  const { deploy } = deployments
+  const { deployer } = await utils.getAccounts(hre)
 
-  const { deployer } = await getNamedAccounts()
-  console.log("deployer:", deployer)
-  
+  const contractName = "ERC1155Mock"
+  const contractPath = "contracts/mocks/ERC1155Mock.sol:ERC1155Mock"
+
   const uri = "ipfs://0000000000000000000000000000000000000000000000000000000000000000"
+  const contractArgs = [uri]
 
-  console.log("Deploying a contract with uri = %s", uri)
-  const erc1155 = await deploy("ERC1155Mock", {
-    args: [
-      uri,
-    ],
-    from: deployer,
-    log: true,
-  })
-  console.log(erc1155)
-
-  await hre.ethers.provider.waitForTransaction(erc1155.transactionHash!, 10)
-
-  console.log("Verifying")
-  await hre.run("verify:verify", {
-    contract: "contracts/mocks/ERC1155Mock.sol:ERC1155Mock",
-    address: erc1155.address,
-    constructorArguments: [
-      uri,
-    ],
-  })
-  console.log("VERIFICATION COMPLETE")
+  const deployment = await utils.deployContract(hre, contractName, contractPath, contractArgs, deployer)
+  await utils.waitForConfirmation(hre, deployment)
+  await utils.verifyContract(hre, deployment, contractPath, contractArgs)
 }
 module.exports.tags = ["ERC1155Mock"]
