@@ -21,16 +21,16 @@ export async function deployContract(
 ): Promise<DeployResult> {
   console.log(`Deploying the ${contractName} contract`)
   console.log("Args:", contractArgs)
-  const contract = await hre.deployments.deploy(contractName, {
+  const deployment = await hre.deployments.deploy(contractName, {
     contract: contractPath,
     from: deployer,
     args: contractArgs,
     log: true,
   })
-  console.log("Deployed contract:", contract.address)
+  console.log("Deployed contract:", deployment.address)
   console.log("---------------------------------")
 
-  return contract
+  return deployment
 }
 
 export async function waitForConfirmation(
@@ -49,7 +49,7 @@ export async function verifyContract(
   hre: HardhatRuntimeEnvironment,
   deployment: DeployResult,
   contractPath: string,
-  args: any[],
+  args: any[] = [],
 ): Promise<void> {
   console.log("Verifying")
   await hre.run("verify:verify", {
@@ -59,4 +59,39 @@ export async function verifyContract(
     compilerversion: "0.8.19",
   })
   console.log("Verification complete")
+}
+
+export async function deployUpgradeableContract(
+  hre: HardhatRuntimeEnvironment,
+  contractName: string,
+  contractPath: string,
+  contractArgs: any[],
+  deployer: string,
+  owner: string,
+): Promise<DeployResult> {
+  console.log(`Deploying the ${contractName} contract`)
+  console.log("Args:", contractArgs)
+  const deployment = await hre.deployments.deploy(contractName, {
+    contract: contractPath,
+    from: deployer,
+    args: contractArgs,
+    proxy: {
+      owner: owner,
+      proxyContract: "OpenZeppelinTransparentProxy",
+      viaAdminContract: "DefaultProxyAdmin",
+      execute: {
+        init: {
+          methodName: "initialize",
+          args: [
+          ],
+        }
+      },
+      upgradeIndex: 0,
+    },
+    log: true,
+  })
+  console.log("Deployed contract:", deployment.address)
+  console.log("---------------------------------")
+
+  return deployment
 }
