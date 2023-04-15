@@ -73,4 +73,24 @@ describe("ERC721Mock", async function () {
       expect(await erc721.balanceOf(owner.address)).to.equal(INITIAL_TOTAL_SUPPLY)
     })
   })
+  
+  describe("Mint", async function () {
+    it("OK: Mint one NFT", async function () {
+      const mintTx = await erc721.mintToken(owner.address)
+      await expect(mintTx).not.to.be.reverted
+      await expect(mintTx).to.emit(erc721, "Transfer").withArgs(AddressZero, owner.address, BigNumber.from(0))
+      expect(await erc721.totalSupply()).to.equal(1)
+      expect(await erc721.balanceOf(owner.address)).to.equal(1)
+    })
+
+    it("OK: Mint several NFTs", async function () {
+      const mintAmount = 100
+      const mintTx = await erc721.mintTokens(owner.address, mintAmount)
+      await expect(mintTx).not.to.be.reverted
+      await expect(mintTx).to.emit(erc721, "Transfer").withArgs(AddressZero, owner.address, BigNumber.from(0))
+      await expect(mintTx).to.emit(erc721, "Transfer").withArgs(AddressZero, owner.address, BigNumber.from(99))
+      expect(await erc721.totalSupply()).to.equal(mintAmount)
+      expect(await erc721.balanceOf(owner.address)).to.equal(mintAmount)
+    })
+  })
 })
