@@ -74,7 +74,7 @@ export async function deployUpgradeableContract(
   const deployment = await hre.deployments.deploy(contractName, {
     contract: contractPath,
     from: deployer,
-    args: contractArgs,
+    args: [],
     proxy: {
       owner: owner,
       proxyContract: "OpenZeppelinTransparentProxy",
@@ -82,9 +82,8 @@ export async function deployUpgradeableContract(
       execute: {
         init: {
           methodName: "initialize",
-          args: [
-          ],
-        }
+          args: contractArgs,
+        },
       },
       upgradeIndex: 0,
     },
