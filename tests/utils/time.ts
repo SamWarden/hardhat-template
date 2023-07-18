@@ -1,4 +1,3 @@
-import { BigNumber } from "ethers"
 import hre from "hardhat"
 
 const { ethers } = hre
@@ -19,60 +18,57 @@ export async function advanceBlockTo(blockNumber: number): Promise<void> {
   }
 }
 
-export async function setNextBlockTime(time: number | BigNumber): Promise<void> {
-  if (time instanceof ethers.BigNumber) {
-    time = time.toNumber()
-  }
+export async function setNextBlockTime(time: number | bigint): Promise<void> {
   await ethers.provider.send("evm_setNextBlockTimestamp", [time])
 }
 
-export async function setTime(time: BigNumber): Promise<void> {
+export async function setTime(time: bigint): Promise<void> {
   await setNextBlockTime(time)
   await advanceBlock()
 }
 
-export async function getCurrentBlockTime(): Promise<BigNumber> {
+export async function getCurrentBlockTime(): Promise<bigint> {
   const block = await ethers.provider.getBlock("latest")
-  return BigNumber.from(block.timestamp)
+  if (!block) {
+    throw new Error("No block found")
+  }
+  return BigInt(block.timestamp)
 }
 
-export async function advanceTimeAndBlock(time: BigNumber): Promise<void> {
+export async function advanceTimeAndBlock(time: bigint): Promise<void> {
   await advanceTime(time)
   await advanceBlock()
 }
 
-export async function advanceTime(time: number | BigNumber): Promise<void> {
-  if (time instanceof ethers.BigNumber) {
-    time = time.toNumber()
-  }
+export async function advanceTime(time: number | bigint): Promise<void> {
   await ethers.provider.send("evm_increaseTime", [time])
 }
 
-export async function makeSnapshot(): Promise<BigNumber> {
+export async function makeSnapshot(): Promise<bigint> {
   return hre.network.provider.send("evm_snapshot")
 }
 
-export async function revertToSnapshot(snapshotId: BigNumber): Promise<void> {
+export async function revertToSnapshot(snapshotId: bigint): Promise<void> {
   await hre.network.provider.send("evm_revert", [snapshotId])
 }
 
 export const duration = {
-  seconds: function (val: string): BigNumber {
-    return BigNumber.from(val)
+  seconds: function (val: bigint): bigint {
+    return val
   },
-  minutes: function (val: string): BigNumber {
-    return BigNumber.from(val).mul(this.seconds("60"))
+  minutes: function (val: bigint): bigint {
+    return val * this.seconds(60n)
   },
-  hours: function (val: string): BigNumber {
-    return BigNumber.from(val).mul(this.minutes("60"))
+  hours: function (val: bigint): bigint {
+    return val * this.minutes(60n)
   },
-  days: function (val: string): BigNumber {
-      return BigNumber.from(val).mul(this.hours("24"))
+  days: function (val: bigint): bigint {
+      return val * this.hours(24n)
   },
-  weeks: function (val: string): BigNumber {
-    return BigNumber.from(val).mul(this.days("7"))
+  weeks: function (val: bigint): bigint {
+    return val * this.days(7n)
   },
-  years: function (val: string): BigNumber {
-    return BigNumber.from(val).mul(this.days("365"))
+  years: function (val: bigint): bigint {
+    return val * this.days(365n)
   },
 }

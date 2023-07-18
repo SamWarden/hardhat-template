@@ -1,18 +1,9 @@
-import { BigNumber, BigNumberish } from "ethers";
-import { formatUnits, parseUnits } from "ethers/lib/utils";
+import { BigNumberish, formatUnits, parseUnits } from "ethers";
 
-export function toBN(value: string | number | BigNumber): BigNumber {
-  return BigNumber.from(value)
-}
-
-export function toBNs(arr: string[] | number[] | BigNumber[]): BigNumber[] {
-  return arr.map(toBN)
-}
-
-export function formatAllUnits(arr: BigNumber[], unitName?: BigNumberish): string[] {
+export function formatAllUnits(arr: bigint[], unitName?: BigNumberish): string[] {
   return arr.map((item) => formatUnits(item, unitName))
 }
 
-export function parseAllUnits(arr: string[], unitName?: BigNumberish): BigNumber[] {
+export function parseAllUnits(arr: string[], unitName?: BigNumberish): bigint[] {
   return arr.map((item) => parseUnits(item, unitName))
 }

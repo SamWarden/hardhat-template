@@ -1,5 +1,4 @@
-import { BigNumber } from "ethers"
-import type { SignerWithAddress } from "@nomiclabs/hardhat-ethers/signers"
+import type { SignerWithAddress } from "@nomicfoundation/hardhat-ethers/signers"
 import type { ERC20Mock, ERC721Mock } from "./build/typechain"
 
 declare module "mocha" {
@@ -34,6 +33,6 @@ declare module "mocha" {
     erc721Mock2: ERC721Mock
     erc721Mock3: ERC721Mock
 
-    snapshotId: BigNumber
+    snapshotId: bigint
   }
 }

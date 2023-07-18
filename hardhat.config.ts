@@ -1,7 +1,7 @@
 import "dotenv/config"
 import { HardhatUserConfig } from "hardhat/types"
 import { ethers } from "ethers"
-import "@nomiclabs/hardhat-ethers"
+import "@nomicfoundation/hardhat-ethers"
 import "@nomiclabs/hardhat-etherscan"
 import "@nomiclabs/hardhat-solhint";
 import "@nomicfoundation/hardhat-chai-matchers"
@@ -62,7 +62,7 @@ const config: HardhatUserConfig = {
       },
       accounts: {
         mnemonic: MNEMONIC,
-        accountsBalance: ethers.utils.parseEther('1000000').toString(),
+        accountsBalance: ethers.parseEther("1000000").toString(),
       },
     },
     localhost: {

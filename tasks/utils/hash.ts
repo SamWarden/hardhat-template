@@ -15,7 +15,7 @@ task("hash", "Get a hash of parameters")
     console.log("Types:", typesArr)
     console.log("Values:", valuesArr)
 
-    const hash = hre.ethers.utils.keccak256(hre.ethers.utils.solidityPack(typesArr, valuesArr))
+    const hash = hre.ethers.solidityPackedKeccak256(typesArr, valuesArr)
     console.log("Hash:", hash)
 
     return hash

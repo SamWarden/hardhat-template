@@ -42,7 +42,15 @@ export async function waitForConfirmation(
     throw Error("Transaction hash is undefined")
   }
   console.log(`Waiting for ${confirmations} confirmations for this ${deployment.transactionHash} transaction...`)
-  await hre.ethers.provider.waitForTransaction(deployment.transactionHash, confirmations)
+  console.log(hre.ethers.provider)
+  const tx = await hre.ethers.provider.getTransaction(deployment.transactionHash)
+  if (tx === null) {
+    throw Error("Transaction is null")
+  }
+  await tx.wait(confirmations)
+
+  // In some reason this method is not implemented now
+  // await hre.ethers.provider.provider.waitForTransaction(deployment.transactionHash, confirmations)
 }
 
 export async function verifyContract(
