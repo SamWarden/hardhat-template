@@ -1,17 +1,17 @@
 import hre from "hardhat"
-import { Contract, ContractFactory, BigNumber } from "ethers"
+import { Contract, ContractFactory } from "ethers"
 import { expect, use as chaiUse } from "chai"
 import { AddressZero } from "@ethersproject/constants"
-import type { SignerWithAddress } from "@nomiclabs/hardhat-ethers/signers"
+import type { SignerWithAddress } from "@nomicfoundation/hardhat-ethers/signers"
 import { prepareSigners } from "./utils/prepare"
 import { makeSnapshot, revertToSnapshot } from "./utils/time"
 import {
   ERC20Mock as ERC20MockContract, ERC20Mock__factory,
 } from "../build/typechain"
 
-const { parseUnits } = hre.ethers.utils
+const { parseUnits } = hre.ethers
 
-describe("ERC20Mock", async function () {
+describe("ERC20Mock", function () {
   let ERC20Mock: ERC20Mock__factory
   
   let erc20: ERC20MockContract
@@ -30,7 +30,7 @@ describe("ERC20Mock", async function () {
 
     ERC20Mock = new ERC20Mock__factory(owner)
     erc20 = await ERC20Mock.deploy(TOKEN_NAME, TOKEN_SYMBOL, TOKEN_DECIMALS)
-    await erc20.deployed()
+    await erc20.waitForDeployment()
   })
 
   beforeEach(async function () {
@@ -41,13 +41,13 @@ describe("ERC20Mock", async function () {
     await revertToSnapshot(this.snapshotId)
   })
 
-  describe("Deployment", async function () {
+  describe("Deployment", function () {
     it("OK: Deploy token", async function () {
       await expect(ERC20Mock.deploy(TOKEN_NAME, TOKEN_SYMBOL, TOKEN_DECIMALS)).not.to.be.reverted
     })
   })
 
-  describe("Getters", async function () {
+  describe("Getters", function () {
     it("OK: Get name", async function () {
       expect(await erc20.name()).to.equal(TOKEN_NAME)
     })
@@ -69,13 +69,13 @@ describe("ERC20Mock", async function () {
     })
   })
 
-  describe("Transactions", async function () {
+  describe("Transactions", function () {
     const transferAmount = parseUnits("100")
 
     let recipient: SignerWithAddress
-    let initialOwnerBalance: BigNumber
-    let ownerBalanceWithTransferAmount: BigNumber
-    let initialRecipientBalance: BigNumber
+    let initialOwnerBalance: bigint
+    let ownerBalanceWithTransferAmount: bigint
+    let initialRecipientBalance: bigint
 
     beforeEach(async function () {
       recipient = this.bob

@@ -19,7 +19,7 @@ task("sign", "Sign a message")
 
     if (hashTypes) {
       const hash = await hre.run("hash", {types: hashTypes, values: message})
-      message = hre.ethers.utils.arrayify(hash)
+      message = hre.ethers.getBytes(hash)
     }
   
     console.log("Signer:", signer.address)

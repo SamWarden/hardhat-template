@@ -1,4 +1,4 @@
-import { SignerWithAddress } from "@nomiclabs/hardhat-ethers/signers"
+import { SignerWithAddress } from "@nomicfoundation/hardhat-ethers/signers"
 import { ethers } from "hardhat"
 import { ERC20Mock__factory, ERC721Mock__factory } from "../../build/typechain"
 
@@ -24,18 +24,18 @@ export async function prepareERC20Tokens(thisObject: Mocha.Context, signer: Sign
   const tokenFactory = new ERC20Mock__factory()
 
   const token1 = await tokenFactory.connect(signer).deploy("Token1", "TKN1", 18)
-  await token1.deployed()
-  await token1.connect(signer).mint(signer.address, ethers.utils.parseUnits("100000"))
+  await token1.waitForDeployment()
+  await token1.connect(signer).mint(signer.address, ethers.parseUnits("100000"))
   thisObject.token1 = token1
 
   const token2 = await tokenFactory.connect(signer).deploy("Token2", "TKN2", 18)
-  await token2.deployed()
-  await token2.connect(signer).mint(signer.address, ethers.utils.parseUnits("100000"))
+  await token2.waitForDeployment()
+  await token2.connect(signer).mint(signer.address, ethers.parseUnits("100000"))
   thisObject.token2 = token2
 
   const token3 = await tokenFactory.connect(signer).deploy("Token3", "TKN3", 18)
-  await token3.deployed()
-  await token3.connect(signer).mint(signer.address, ethers.utils.parseUnits("100000"))
+  await token3.waitForDeployment()
+  await token3.connect(signer).mint(signer.address, ethers.parseUnits("100000"))
   thisObject.token3 = token3
 }
 
@@ -43,14 +43,14 @@ export async function prepareERC721Tokens(thisObject: Mocha.Context, signer: Sig
   const tokenFactory = new ERC721Mock__factory()
 
   const erc721Mock1 = await tokenFactory.connect(signer).deploy("ERC721Mock1", "E721M1", "ipfs://baseURI1", "ipfs://contractURI1")
-  await erc721Mock1.deployed()
+  await erc721Mock1.waitForDeployment()
   thisObject.erc721Mock1 = erc721Mock1
 
   const erc721Mock2 = await tokenFactory.connect(signer).deploy("ERC721Mock2", "E721M2", "ipfs://baseURI2", "ipfs://contractURI2")
-  await erc721Mock2.deployed()
+  await erc721Mock2.waitForDeployment()
   thisObject.erc721Mock2 = erc721Mock2
 
   const erc721Mock3 = await tokenFactory.connect(signer).deploy("ERC721Mock3", "E721M3", "ipfs://baseURI2", "ipfs://contractURI2")
-  await erc721Mock3.deployed()
+  await erc721Mock3.waitForDeployment()
   thisObject.erc721Mock3 = erc721Mock3
 }

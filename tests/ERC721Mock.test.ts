@@ -1,17 +1,17 @@
 import hre from "hardhat"
-import { Contract, ContractFactory, BigNumber } from "ethers"
+import { Contract, ContractFactory } from "ethers"
 import { expect, use as chaiUse } from "chai"
 import { AddressZero } from "@ethersproject/constants"
-import type { SignerWithAddress } from "@nomiclabs/hardhat-ethers/signers"
+import type { SignerWithAddress } from "@nomicfoundation/hardhat-ethers/signers"
 import { prepareSigners } from "./utils/prepare"
 import { makeSnapshot, revertToSnapshot } from "./utils/time"
 import {
   ERC721Mock as ERC721MockContract, ERC721Mock__factory,
 } from "../build/typechain"
 
-const { parseUnits } = hre.ethers.utils
+const { parseUnits } = hre.ethers
 
-describe("ERC721Mock", async function () {
+describe("ERC721Mock", function () {
   let ERC721Mock: ERC721Mock__factory
   
   let erc721: ERC721MockContract
@@ -31,7 +31,7 @@ describe("ERC721Mock", async function () {
 
     ERC721Mock = new ERC721Mock__factory(owner)
     erc721 = await ERC721Mock.deploy(TOKEN_NAME, TOKEN_SYMBOL, BASE_URI, CONTRACT_URI)
-    await erc721.deployed()
+    await erc721.waitForDeployment()
   })
 
   beforeEach(async function () {
@@ -42,13 +42,13 @@ describe("ERC721Mock", async function () {
     await revertToSnapshot(this.snapshotId)
   })
 
-  describe("Deployment", async function () {
+  describe("Deployment", function () {
     it("OK: Deploy nft", async function () {
       await expect(ERC721Mock.deploy(TOKEN_NAME, TOKEN_SYMBOL, BASE_URI, CONTRACT_URI)).not.to.be.reverted
     })
   })
 
-  describe("Getters", async function () {
+  describe("Getters", function () {
     it("OK: Get name", async function () {
       expect(await erc721.name()).to.equal(TOKEN_NAME)
     })
@@ -74,11 +74,11 @@ describe("ERC721Mock", async function () {
     })
   })
   
-  describe("Mint", async function () {
+  describe("Mint", function () {
     it("OK: Mint one NFT", async function () {
       const mintTx = await erc721.mintToken(owner.address)
       await expect(mintTx).not.to.be.reverted
-      await expect(mintTx).to.emit(erc721, "Transfer").withArgs(AddressZero, owner.address, BigNumber.from(0))
+      await expect(mintTx).to.emit(erc721, "Transfer").withArgs(AddressZero, owner.address, 0n)
       expect(await erc721.totalSupply()).to.equal(1)
       expect(await erc721.balanceOf(owner.address)).to.equal(1)
     })
@@ -87,8 +87,8 @@ describe("ERC721Mock", async function () {
       const mintAmount = 100
       const mintTx = await erc721.mintTokens(owner.address, mintAmount)
       await expect(mintTx).not.to.be.reverted
-      await expect(mintTx).to.emit(erc721, "Transfer").withArgs(AddressZero, owner.address, BigNumber.from(0))
-      await expect(mintTx).to.emit(erc721, "Transfer").withArgs(AddressZero, owner.address, BigNumber.from(99))
+      await expect(mintTx).to.emit(erc721, "Transfer").withArgs(AddressZero, owner.address, 0n)
+      await expect(mintTx).to.emit(erc721, "Transfer").withArgs(AddressZero, owner.address, 99n)
       expect(await erc721.totalSupply()).to.equal(mintAmount)
       expect(await erc721.balanceOf(owner.address)).to.equal(mintAmount)
     })
