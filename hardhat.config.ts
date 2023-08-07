@@ -21,6 +21,7 @@ import "./tasks"
 const INFURA_PROJECT_ID = process.env.INFURA_PROJECT_ID
 const ALCHEMYAPI_URL = process.env.ALCHEMYAPI_URL
 const COINMARKETCAP_API_KEY = process.env.COINMARKETCAP_API_KEY
+const CUSTOM_NODE_URL = process.env.CUSTOM_NODE_URL || "http://127.0.0.1:8545/"
 
 const REPORT_GAS = process.env.REPORT_GAS || "true"
 const GAS_REPORTER_TOKEN = process.env.GAS_REPORTER_TOKEN || "ETH"
@@ -68,6 +69,12 @@ const config: HardhatUserConfig = {
     localhost: {
       url: "http://127.0.0.1:8545/",
       gasMultiplier: 1.2,
+    },
+    custom: {
+      url: CUSTOM_NODE_URL,
+      accounts: {
+        mnemonic: MNEMONIC,
+      }
     },
     mainnet: {
       url: `https://mainnet.infura.io/v3/${INFURA_PROJECT_ID}`,
