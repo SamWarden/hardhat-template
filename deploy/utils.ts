@@ -1,6 +1,8 @@
 import type { Address, DeployResult } from "hardhat-deploy/dist/types"
 import type { HardhatRuntimeEnvironment } from "hardhat/types"
 
+const IGNORED_NETWORKS = ["hardhat", "localhost", "custom"]
+
 
 export async function getAccounts(hre: HardhatRuntimeEnvironment): Promise<{ [name: string]: Address }> {
   const { deployer, owner } = await hre.getNamedAccounts()
@@ -37,12 +39,18 @@ export async function waitForConfirmation(
   hre: HardhatRuntimeEnvironment,
   deployment: DeployResult,
   confirmations: number = 10,
+  wait?: boolean,
 ): Promise<void> {
   if (deployment.transactionHash === undefined) {
     throw Error("Transaction hash is undefined")
   }
+
+  const network = await hre.ethers.provider.getNetwork()
+  if ((wait === false) || (wait !== true && IGNORED_NETWORKS.includes(network.name))) {
+    console.log(`Skipping confirmation waiting for the "${network.name}" network`)
+    return
+  }
   console.log(`Waiting for ${confirmations} confirmations for this ${deployment.transactionHash} transaction...`)
-  console.log(hre.ethers.provider)
   const tx = await hre.ethers.provider.getTransaction(deployment.transactionHash)
   if (tx === null) {
     throw Error("Transaction is null")
@@ -58,7 +66,14 @@ export async function verifyContract(
   deployment: DeployResult,
   contractPath: string,
   args: any[] = [],
+  verify?: boolean,
 ): Promise<void> {
+  const network = await hre.ethers.provider.getNetwork()
+  if ((verify === false) || (verify !== true && IGNORED_NETWORKS.includes(network.name))) {
+    console.log(`Skipping verification for the "${network.name}" network`)
+    return
+  }
+
   console.log("Verifying")
   await hre.run("verify:verify", {
     contract: contractPath,

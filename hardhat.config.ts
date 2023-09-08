@@ -27,6 +27,7 @@ const REPORT_GAS = process.env.REPORT_GAS || "true"
 const GAS_REPORTER_TOKEN = process.env.GAS_REPORTER_TOKEN || "ETH"
 const GAS_PRICE_API = process.env.GAS_PRICE_API
 const REPORTER_GAS_PRICE = Number(process.env.REPORTER_GAS_PRICE) || 50
+const HARDHAT_MINING_INTERVAL = Number(process.env.HARDHAT_MINING_INTERVAL) || 0
 
 const ETHERSCAN_API_KEY = process.env.ETHERSCAN_API_KEY || ""
 const BSCSCAN_API_KEY = process.env.BSCSCAN_API_KEY || ""
@@ -57,6 +58,7 @@ const config: HardhatUserConfig = {
     hardhat: {
       blockGasLimit: 12450000 * 100,
       forking: {
+        enabled: !FORKING_URL,
         url: FORKING_URL,
         // specifing blockNumber available only for AlchemyAPI
         blockNumber: ALCHEMYAPI_URL ? BLOCK_NUMBER : undefined,
@@ -64,6 +66,10 @@ const config: HardhatUserConfig = {
       accounts: {
         mnemonic: MNEMONIC,
         accountsBalance: ethers.parseEther("1000000").toString(),
+      },
+      mining: {
+        auto: true,
+        interval: HARDHAT_MINING_INTERVAL,
       },
     },
     localhost: {
