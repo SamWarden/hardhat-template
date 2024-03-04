@@ -3,7 +3,7 @@
 pragma solidity ^0.8.19;
 
 import {IERC20} from "@openzeppelin/contracts/token/ERC20/IERC20.sol";
-import {IUniswapV2Factory} from "./IUniswapV2Factory.sol";
+import {IUniswapV2Factory} from "../../../uniswap-v2/contracts/interfaces/IUniswapV2Factory.sol";
 
 interface IERC20UniswapFee is IERC20 {
     error CannotSetPairAddress(address uniswapV2Pair);
