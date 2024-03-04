@@ -1,5 +1,5 @@
 #Specify a base image
-FROM node:16.16.0-buster-slim
+FROM node:20.11.1-buster-slim
 
 #Specify a working directory
 WORKDIR /usr/src/app
@@ -13,4 +13,6 @@ COPY ./package.json yarn.lock ./
 #Install dependencies
 RUN yarn install
 
-ENTRYPOINT ["yarn", "hardhat"]
+COPY ./ ./
+
+ENTRYPOINT ["yarn", "run"]

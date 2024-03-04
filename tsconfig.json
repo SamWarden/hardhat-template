@@ -1,7 +1,7 @@
 {
   "compilerOptions": {
     "target": "ES2022",
-    "module": "commonjs",
+    "module": "nodenext",
     "strict": true,
     "esModuleInterop": true,
     "outDir": "dist",
@@ -21,7 +21,7 @@
     "require": ["tsconfig-paths/register"]
   },
   "include": [
-    "./hardhat.config.ts",
+    "hardhat.config.ts",
     "./scripts",
     "./tests",
     "./tasks",
@@ -33,5 +33,5 @@
     "./libs",
     "./src"
   ],
-  "files": ["./hardhat.config.ts"]
+  "files": ["hardhat.config.ts"]
 }
